@@ -3,10 +3,11 @@ import * as path from 'path';
 import * as bodyParser from 'body-parser';
 import * as http from 'http';
 import * as os from 'os';
+import passport from './auth';
 import cookieParser from 'cookie-parser';
+import cookieSession from 'cookie-session';
 
 import swaggerify from './swagger';
-
 import l from './logger';
 
 const app = new Express();
@@ -15,9 +16,14 @@ export default class ExpressServer {
   constructor() {
     const root = path.normalize(`${__dirname}/../..`);
     app.set('appPath', `${root}client`);
+    app.use(passport.initialize());
     app.use(bodyParser.json({ limit: process.env.REQUEST_LIMIT || '100kb' }));
     app.use(bodyParser.urlencoded({ extended: true, limit: process.env.REQUEST_LIMIT || '100kb' }));
-    app.use(cookieParser(process.env.SESSION_SECRET));
+    app.use(cookieSession({
+      name: 'session',
+      keys: [process.env.SESSION_SECRET]
+  }));
+    app.use(cookieParser());
     app.use(Express.static(`${root}/public`));
   }
 

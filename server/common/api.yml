@@ -67,6 +67,30 @@ paths:
         404:
           description: Example not found
 
+  /auth/google:
+    get:
+      tags:
+        - Authentication
+      responses:
+        200:
+          description: Authentication success
+  
+  /auth/logout:
+    get:
+      tags:
+        - Authentication
+      responses:
+        200:
+          description: Logout
+  
+  /auth/google/callback:
+    get:
+      tags:
+        - Authentication
+      responses:
+        200:
+          description: Authentication success
+
   /spec:
     get:
       tags:

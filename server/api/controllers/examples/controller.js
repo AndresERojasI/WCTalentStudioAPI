@@ -1,4 +1,6 @@
 import ExamplesService from '../../services/examples.service';
+import checkAuth from '../../../common/chechAuth';
+import chechAuth from '../../../common/chechAuth';
 
 export class Controller {
   all(req, res) {
@@ -16,6 +18,12 @@ export class Controller {
   }
 
   create(req, res) {
+    console.log(chechAuth(req));
+    if(chechAuth(req) === false) {
+      res.status(403).end();
+      return false;
+    }
+
     ExamplesService
       .create(req.body.name)
       .then(r => res
